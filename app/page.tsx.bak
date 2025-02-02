@@ -1,0 +1,389 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import Services from '../components/Services';
+import styles from './index.module.css';
+import { Shield, CheckCircle, Headphones, Accessibility, Type, Sun, Link as LinkIcon, PauseCircle, ArrowLeftRight } from 'lucide-react';
+export default function Page() {
+const [activeTestimonial, setActiveTestimonial] = useState(0);
+const [accessibilityOpen, setAccessibilityOpen] = useState(false);
+const [fontSize, setFontSize] = useState(1);
+const [contrast, setContrast] = useState('normal');
+const [highlightLinks, setHighlightLinks] = useState(false);
+const [stopAnimations, setStopAnimations] = useState(false);
+const [textSpacing, setTextSpacing] = useState(1);
+
+const testimonials = [
+    {
+    text: "השירות המקצועי והאמין של חיים מנופים עזר לנו להשלים את הפרויקט בזמן ובאיכות הגבוהה ביותר.",
+    author: "יוסי כהן",
+    role: "מנהל פרויקטים, חברת בנייה",
+    },
+    {
+    text: "הצוות המקצועי והמסור תמיד זמין ומגיע בזמן. ציוד איכותי ושירות מעולה.",
+    author: "דוד לוי",
+    role: "מנהל אתר בנייה",
+    },
+    {
+    text: "אמינות, מקצועיות ושירות מעל המצופה. ממליץ בחום על חיים מנופים.",
+    author: "רועי שמעוני",
+    role: "קבלן ראשי",
+    }
+];
+
+useEffect(() => {
+    document.documentElement.style.setProperty('--font-size-multiplier', fontSize.toString());
+    document.documentElement.style.setProperty('--text-spacing-multiplier', textSpacing.toString());
+    
+    if (contrast === 'high') {
+    document.body.classList.add(styles.highContrast);
+    } else {
+    document.body.classList.remove(styles.highContrast);
+    }
+
+    if (highlightLinks) {
+    document.body.classList.add(styles.highlightLinks);
+    } else {
+    document.body.classList.remove(styles.highlightLinks);
+    }
+
+    if (stopAnimations) {
+    document.body.classList.add(styles.stopAnimations);
+    } else {
+    document.body.classList.remove(styles.stopAnimations);
+    }
+}, [fontSize, contrast, highlightLinks, stopAnimations, textSpacing]);
+
+useEffect(() => {
+const timer = setInterval(() => {
+    setActiveTestimonial((prev) => 
+    prev === testimonials.length - 1 ? 0 : prev + 1
+    );
+}, 5000);
+
+return () => clearInterval(timer);
+}, []);
+
+return (
+<div className={styles.mainWrapper}>
+    <div className={styles.contentWrapper}>
+    <div className={styles.mainContainer}>
+        <header className={styles.headerSection}>
+        <Image 
+            src="/haim-logo.png"
+            alt="Haim Logo"
+            width={200}
+            height={80}
+            priority
+            className={styles.mainLogo}
+        />
+        <nav>
+            <ul className={styles.navSection}>
+            <li className={styles.navItem}><Link href="/" className={styles.navigationLink}>בית</Link></li>
+            <li className={styles.navItem}><Link href="/products" className={styles.navigationLink}>מוצרים</Link></li>
+            <li className={styles.navItem}><Link href="/services" className={styles.navigationLink}>שירותים</Link></li>
+            <li className={styles.navItem}><Link href="/contact" className={styles.navigationLink}>צור קשר</Link></li>
+            </ul>
+        </nav>
+        </header>
+
+        <main>
+        <section className={styles.heroSection}>
+            <div className={styles.heroContainer}>
+            <h1>פתרונות הרמה מתקדמים</h1>
+            <p>חברת חיים מנופים מספקת פתרונות הרמה מקצועיים ואמינים</p>
+            </div>
+        </section>
+
+        <section className={styles.featuresGrid}>
+            <div className={styles.featureCard}>
+            <Shield className={styles.featureIcon} />
+            <h3 className={styles.featureTitle}>בטיחות מקסימלית</h3>
+            <p className={styles.featureText}>ציוד מתקדם העומד בתקני הבטיחות</p>
+            </div>
+            <div className={styles.featureCard}>
+            <CheckCircle className={styles.featureIcon} />
+            <h3 className={styles.featureTitle}>מקצועיות</h3>
+            <p className={styles.featureText}>צוות מיומן ומנוסה</p>
+            </div>
+            <div className={styles.featureCard}>
+            <Headphones className={styles.featureIcon} />
+            <h3 className={styles.featureTitle}>שירות 24/7</h3>
+            <p className={styles.featureText}>זמינות מלאה לכל קריאה</p>
+            </div>
+        </section>
+
+        <Services />
+
+        <section className={styles.testimonialsSection}>
+            <div className={styles.testimonialsGrid}>
+            {testimonials.map((testimonial, index) => (
+                <div key={index} className={styles.testimonialCard}>
+                <p className={styles.testimonialText}>{testimonial.text}</p>
+                <p className={styles.testimonialAuthor}>{testimonial.author}</p>
+                <p>{testimonial.role}</p>
+                </div>
+            ))}
+            </div>
+        </section>
+
+        <section className={styles.ctaSection}>
+            <h2>מוכנים להתחיל?</h2>
+            <p>צרו קשר עוד היום לקבלת הצעת מחיר</p>
+            <Link href="/contact" className={styles.ctaBtn}>
+            צור קשר עכשיו
+            </Link>
+        </section>
+        </main>
+
+        <footer className={styles.footerSection}>
+        <div className={styles.footerGrid}>
+            <div>
+            <h3>צור קשר</h3>
+            <ul className={styles.footerNav}>
+                <li><Link href="/contact" className={styles.footerLink}>טלפון: 1-800-XXX-XXX</Link></li>
+                <li><Link href="/contact" className={styles.footerLink}>אימייל: info@haim-menofim.co.il</Link></li>
+            </ul>
+            </div>
+            <div>
+            <h3>קישורים מהירים</h3>
+            <ul className={styles.footerNav}>
+                <li><Link href="/about" className={styles.footerLink}>אודות</Link></li>
+                <li><Link href="/products" className={styles.footerLink}>מוצרים</Link></li>
+                <li><Link href="/services" className={styles.footerLink}>שירותים</Link></li>
+            </ul>
+            </div>
+        </div>
+        <div className={styles.footerBottom}>
+            <p>© 2024 חיים מנופים. כל הזכויות שמורות.</p>
+        </div>
+        </footer>
+    </div>
+    </div>
+</div>
+);
+            onClick={() => setAccessibilityOpen(!accessibilityOpen)}
+            aria-expanded={accessibilityOpen}
+            aria-label="תפריט נגישות"
+        >
+            <Accessibility />
+        </button>
+
+    {accessibilityOpen && (
+        <div className={styles.accessibilityPanel} role="dialog" aria-label="אפשרויות נגישות">
+        <h2>אפשרויות נגישות</h2>
+        
+        <div className={styles.accessibilityOption}>
+            <Type />
+            <label>
+            גודל טקסט
+            <input 
+                type="range" 
+                min="0.8" 
+                max="1.5" 
+                step="0.1" 
+                value={fontSize}
+                onChange={(e) => setFontSize(parseFloat(e.target.value))}
+                aria-label="שינוי גודל טקסט"
+            />
+            </label>
+        </div>
+
+        <div className={styles.accessibilityOption}>
+            <Sun />
+            <label>
+            ניגודיות
+            <select 
+                value={contrast} 
+                onChange={(e) => setContrast(e.target.value)}
+                aria-label="שינוי ניגודיות"
+            >
+                <option value="normal">רגיל</option>
+                <option value="high">ניגודיות גבוהה</option>
+            </select>
+            </label>
+        </div>
+
+        <div className={styles.accessibilityOption}>
+            <LinkIcon />
+            <label>
+            הדגשת קישורים
+            <input 
+                type="checkbox"
+                checked={highlightLinks}
+                onChange={(e) => setHighlightLinks(e.target.checked)}
+                aria-label="הדגשת קישורים"
+            />
+            </label>
+        </div>
+
+        <div className={styles.accessibilityOption}>
+            <PauseCircle />
+            <label>
+            עצירת אנימציות
+            <input 
+                type="checkbox"
+                checked={stopAnimations}
+                onChange={(e) => setStopAnimations(e.target.checked)}
+                aria-label="עצירת אנימציות"
+            />
+            </label>
+        </div>
+
+        <div className={styles.accessibilityOption}>
+            <ArrowLeftRight />
+            <label>
+            ריווח טקסט
+            <input 
+                type="range"
+                min="1"
+                max="2"
+                step="0.1"
+                value={textSpacing}
+                onChange={(e) => setTextSpacing(parseFloat(e.target.value))}
+                aria-label="שינוי ריווח טקסט"
+            />
+            </label>
+        </div>
+        </div>
+    )}
+    <div className={styles.contentWrapper}>
+
+        <header className={styles.headerSection}>
+            <Image 
+                src="/haim-logo.png"
+                alt="Haim Logo"
+                width={200}
+                height={80}
+                priority
+                className={styles.mainLogo}
+            />
+            <nav className={styles.navSection}>
+                <ul className={styles.navItems}>
+                    <li><Link href="/">בית</Link></li>
+                    <li><Link href="/products">מוצרים</Link></li>
+                    <li><Link href="/services">שירותים</Link></li>
+                    <li><Link href="/contact">צור קשר</Link></li>
+                </ul>
+            </nav>
+        </header>
+        <section className={styles.heroSection}>
+        <div className={styles.heroContainer}>
+            <div className={styles.heroImageWrapper}>
+                <Image
+                    src={`/bamotcool.png?t=${Date.now()}`}
+                    alt="במת הרמה מתקדמת"
+                    width={500}
+                    height={300}
+                    priority
+                    className={styles.heroImage}
+                />
+            </div>
+            <h4>פתרונות הרמה אמינים ויעילים</h4>
+            <p>חברת <b>חיים מנופים</b> מתמחה במתן פתרונות לעבודה בגובה בכל רחבי הארץ, באמצעות במות הרמה מתקדמות.</p>
+            <p>החברה מתחייבת לשירות מקצועי, יחס אישי, זמני אספקה מהירים במיוחד והקפדה על שימוש בציוד חדיש ובטיחותי ברמה הגבוהה ביותר.</p>
+            <Link href="/products" className={styles.ctaBtn}>צפה במוצרים שלנו</Link>
+        </div>
+        </section>
+    <Services />
+
+    <section className={styles.featuresGrid}>
+        <div className={styles.featureCards}>
+            <div className={styles.featureCard}>
+                <Shield className={styles.featureIcon} />
+                <h3>בטיחות מקסימלית</h3>
+                <p>ציוד מתקדם העומד בתקני הבטיחות המחמירים ביותר</p>
+            </div>
+            <div className={styles.featureCard}>
+                <CheckCircle className={styles.featureIcon} />
+                <p>צוות מקצועי ומנוסה</p>
+            </div>
+            <div className={styles.featureCard}>
+                <Headphones className={styles.featureIcon} />
+                <h3>שירות 24/7</h3>
+                <p>זמינות מלאה לכל קריאה</p>
+            </div>
+        </div>
+    </section>
+
+    <section className={styles.testimonialsSection}>
+        <h2>לקוחות ממליצים</h2>
+        <div className={styles.testimonialCards}>
+            {testimonials.map((testimonial, index) => (
+                <div
+                    key={index}
+                    className={`${styles.testimonialCard} ${index === activeTestimonial ? styles.active : ''}`}
+                >
+                    <p className={styles.testimonialText}>{testimonial.text}</p>
+                    <p className={styles.testimonialAuthor}>{testimonial.author}</p>
+                    <p className={styles.testimonialRole}>{testimonial.role}</p>
+                </div>
+            ))}
+        </div>
+    </section>
+
+    <section className={styles.ctaSection}>
+        <h2>מוכנים להתחיל?</h2>
+        <p>צרו איתנו קשר עוד היום לקבלת הצעת מחיר</p>
+        <Link href="/contact" className={styles.ctaButton}>
+            צור קשר עכשיו
+        </Link>
+    </section>
+            <h2>המוצרים המובילים שלנו</h2>
+            <div className={styles.gridContainer}>
+            <div className={styles.productCard}>
+            <div className={styles.productImage}>
+                <Image src="/zroa.png" alt="במות אנכיות חשמליות" width={300} height={200} className={styles.productImage} />
+            </div>
+            <div className={styles.productContent}>
+                <h3>במות אנכיות חשמליות</h3>
+                <p>במות הרמה אנכיות חשמליות יעילות לעבודה בגובה במקומות סגורים.</p>
+                <Link href="/products/scissor-lift" className={styles.productBtn}>למד עוד</Link>
+            </div>
+            </div>
+
+            <div className={styles.productCard}>
+            <div className={styles.productImage}>
+                <Image src={`/misparim.png?t=${Date.now()}`} alt="במת מספריים חשמלית" width={300} height={200} className={styles.productImage} />
+            </div>
+            <div className={styles.productContent}>
+                <h3>במת מספריים חשמלית</h3>
+                <p>במות מספריים חשמליות מאפשרות עבודה בגובה במקומות מאתגרים.</p>
+                <Link href="/products/articulated-lift" className={styles.productBtn}>למד עוד</Link>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer className={styles.footerSection}>
+    <div className={styles.footerGrid}>
+        <div className={styles.footerColumn}>
+            <h3>צור קשר</h3>
+            <p>טלפון: 1-800-XXX-XXX</p>
+            <p>אימייל: info@haim-menofim.co.il</p>
+        </div>
+        <div className={styles.footerColumn}>
+            <h3>שעות פעילות</h3>
+            <p>ימים א'-ה': 8:00-18:00</p>
+            <p>יום ו': 8:00-13:00</p>
+        </div>
+        <nav className={styles.footerNav}>
+            <h3>קישורים מהירים</h3>
+            <ul>
+                <li><Link href="/about">אודות</Link></li>
+                <li><Link href="/products">מוצרים</Link></li>
+                <li><Link href="/services">שירותים</Link></li>
+                <li><Link href="/contact">צור קשר</Link></li>
+            </ul>
+        </nav>
+    </div>
+    <div className={styles.footerBottom}>
+        <p>© 2023 חיים מנופים. כל הזכויות שמורות.</p>
+    </div>
+</footer>
+</div>
+</div>
+);
+}

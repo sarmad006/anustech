@@ -1,0 +1,263 @@
+.iconBar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #ffffff;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.05);
+    z-index: 999;
+    padding: 15px 0;
+    min-height: 100vh;
+    width: 64px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-left: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.iconWrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 45px;
+    margin: 8px 0;
+    border-radius: 50%;
+    background: transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    color: inherit;
+    text-decoration: none;
+}
+
+.iconWrapper:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-2px);
+}
+
+.sideIcon {
+    width: 24px;
+    height: 24px;
+    color: #666;
+    transition: all 0.3s ease;
+    opacity: 1;
+    visibility: visible;
+}
+
+.iconWrapper:hover .sideIcon {
+    color: #0070f3;
+}
+
+.iconWrapper:nth-child(5):hover {
+    background-color: rgba(255, 0, 0, 0.08);
+}
+
+.iconWrapper:nth-child(5):hover .sideIcon {
+    color: #ff0000;
+}
+
+.navContainer {
+    position: fixed;
+    top: 0;
+    right: 60px;
+    height: 100vh;
+    width: 0;
+    background-color: #ffffff;
+    box-shadow: -1px 0 4px rgba(0, 0, 0, 0.05);
+    transition: width 0.3s ease-in-out;
+    z-index: 998;
+    overflow: hidden;
+}
+
+.navContainer.open {
+    width: 300px;
+}
+
+.searchWrapper {
+    padding: 20px;
+    border-bottom: 1px solid #eaeaea;
+    position: relative;
+    background-color: white;
+    white-space: nowrap;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 12px 40px 12px 15px;
+    border: 2px solid #eaeaea;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.25s ease;
+    direction: rtl;
+    background-color: #f8f9fa;
+    font-family: inherit;
+}
+
+.searchInput:focus {
+    outline: none;
+    border-color: #0070f3;
+    box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1);
+    background-color: white;
+}
+
+.searchIcon {
+    position: absolute;
+    left: 35px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    width: 20px;
+    height: 20px;
+}
+
+.navList {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    padding-right: 0;
+}
+
+.navItem {
+    border-bottom: 1px solid #eaeaea;
+    white-space: nowrap;
+}
+
+.navLink {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 16px 8px;
+    color: #2d3748;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    gap: 8px;
+    font-weight: 500;
+    position: relative;
+    text-align: right;
+    border-right: 3px solid transparent;
+}
+
+.navLink:hover {
+    background-color: rgba(0, 112, 243, 0.04);
+    color: #0070f3;
+    border-right: 3px solid #0070f3;
+}
+
+.navIcon {
+    width: 24px;
+    height: 24px;
+    color: #0070f3;
+    transition: color 0.3s ease;
+}
+
+.iconSeparator {
+    width: 32px;
+    height: 1px;
+    background-color: #eaeaea;
+    margin: 15px 0;
+}
+
+.boldSeparator {
+    padding: 20px 16px 10px;
+    background: #f8f9fa;
+    border-bottom: 5px solid #eaeaea;
+    margin-top: 20px;
+}
+
+.separatorText {
+    display: block;
+    color: #64748b;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.guideIcon {
+    color: #2563eb;
+}
+
+.guideLink {
+    color: #2563eb;
+}
+
+.guideLink:hover {
+    background-color: rgba(37, 99, 235, 0.04);
+    color: #1e40af;
+    border-right: 3px solid #2563eb;
+}
+
+.guideLink:hover .navIcon {
+    color: #1e40af;
+}
+
+.navLink[href="/faq"]:hover {
+    color: #ff0000;
+    background-color: #fff0f0;
+    border-right: 3px solid #ff0000;
+}
+
+.navLink[href="/faq"]:hover .navIcon {
+    color: #ff0000;
+}
+
+@media (max-width: 768px) {
+    .navContainer.open {
+        width: 280px;
+    }
+    
+    .iconBar {
+        width: 50px;
+    }
+    
+    .iconWrapper {
+        padding: 12px;
+    }
+    
+    .sideIcon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .searchInput {
+        font-size: 14px;
+    }
+    
+    .navLink {
+        padding: 12px 8px;
+        gap: 6px;
+    }
+    
+    .navIcon {
+        width: 20px;
+        height: 20px;
+    }
+
+    .boldSeparator {
+        padding: 16px 12px 8px;
+    }
+}
+.spacer {
+    height: 13px;
+}
+
+.spacer2 {
+    height: 3px;
+}
+
+.separator {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-end;
+}
+
+.separatorLine {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ccc;
+    margin-right: 20px;
+    max-width: 50%;
+}
+
+.separatorLabel {
+    font-weight: bold;
+    white-space: nowrap;
+}

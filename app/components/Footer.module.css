@@ -1,0 +1,192 @@
+.footer {
+    position: relative;
+    direction: rtl;
+    background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+  }
+  
+  .footerBackground {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    opacity: 0.03;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  
+  .backgroundImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
+  
+  .container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  
+  .footerTop {
+    position: relative;
+    padding: 2.5rem 0;
+    border-bottom: 1px solid #eaeaea;
+  }
+  
+  .logoAndLinks {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .logoContainer {
+    flex-shrink: 0;
+  }
+  
+  .logo {
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+  
+  .logo:hover {
+    transform: translateY(-2px);
+  }
+  
+  .navigation {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+  
+  .navigation a {
+    color: #4a4a4a;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .navigation a:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #0066cc;
+    transition: width 0.3s ease;
+  }
+  
+  .navigation a:hover {
+    color: #0066cc;
+  }
+  
+  .navigation a:hover:after {
+    width: 100%;
+  }
+  
+  .contactInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+  }
+  
+  .contactItem {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4a4a4a;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .contactItem i {
+    color: #0066cc;
+    width: 20px;
+    text-align: center;
+  }
+  
+  .contactItem:hover {
+    color: #0066cc;
+  }
+  
+  .footerBottom {
+    position: relative;
+    padding: 1.5rem 0;
+  }
+  
+  .socialAndCopyright {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .socialLinks {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  .socialLink {
+    color: #4a4a4a;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 1.5rem;
+  }
+  
+  .socialLink:hover {
+    color: #0066cc;
+    transform: translateY(-2px);
+  }
+  
+  .copyright {
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 1024px) {
+    .logoAndLinks {
+      flex-direction: column;
+      text-align: center;
+    }
+  
+    .navigation {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .contactInfo {
+      align-items: center;
+    }
+  
+    .socialAndCopyright {
+      flex-direction: column;
+      gap: 1rem;
+      text-align: center;
+    }
+  }
+  
+  @media (max-width: 640px) {
+    .navigation {
+      flex-direction: column;
+      gap: 1rem;
+    }
+  
+    .footerTop {
+      padding: 2rem 0;
+    }
+  
+    .container {
+      padding: 0 1rem;
+    }
+    
+    .backgroundImage {
+      height: 120%;
+      object-position: center;
+    }
+  }

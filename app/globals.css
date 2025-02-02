@@ -2,20 +2,114 @@
 @tailwind components;
 @tailwind utilities;
 
+/* שאר הסגנונות הקיימים שלך */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+--background: #ffffff;
+--foreground: #000000;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+min-height: 100vh;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+color: var(--foreground);
+background: var(--background);
+font-family: Arial, Helvetica, sans-serif;
+margin: 0;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+}
+
+main {
+flex: 1 0 auto;
+width: 100%;
+display: flex;
+flex-direction: column;
+padding: 1rem;
+}
+/* Accessibility Variables */
+:root {
+  --font-size-multiplier: 1;
+  --text-spacing: 1em;
+}
+
+/* Apply font size changes only to specific text elements */
+body[data-accessibility="true"] p,
+body[data-accessibility="true"] h1,
+body[data-accessibility="true"] h2,
+body[data-accessibility="true"] h3,
+body[data-accessibility="true"] h4,
+body[data-accessibility="true"] h5,
+body[data-accessibility="true"] h6,
+body[data-accessibility="true"] span,
+body[data-accessibility="true"] button,
+body[data-accessibility="true"] a {
+  font-size: calc(1em * var(--font-size-multiplier));
+}
+
+/* High contrast mode - only apply to specific elements */
+body[data-contrast="high"] {
+  --high-contrast-text: white;
+  --high-contrast-bg: black;
+}
+
+body[data-contrast="high"] p,
+body[data-contrast="high"] h1,
+body[data-contrast="high"] h2,
+body[data-contrast="high"] h3,
+body[data-contrast="high"] h4,
+body[data-contrast="high"] h5,
+body[data-contrast="high"] h6,
+body[data-contrast="high"] span {
+  color: var(--high-contrast-text) !important;
+}
+
+/* Link highlighting - more subtle approach */
+body[data-highlight-links="true"] a:not(.no-highlight) {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 2px;
+}
+
+/* Stop animations - more specific selectors */
+body[data-stop-animations="true"] .animated,
+body[data-stop-animations="true"] [class*="animate-"],
+body[data-stop-animations="true"] [class*="transition-"] {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Dyslexia font - only apply to text elements */
+body[data-dyslexia-font="true"] p,
+body[data-dyslexia-font="true"] span,
+body[data-dyslexia-font="true"] h1,
+body[data-dyslexia-font="true"] h2,
+body[data-dyslexia-font="true"] h3,
+body[data-dyslexia-font="true"] h4,
+body[data-dyslexia-font="true"] h5,
+body[data-dyslexia-font="true"] h6 {
+  font-family: "OpenDyslexic", sans-serif;
+}
+
+/* Reading guide */
+body[data-reading-guide="true"] {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='2' fill='none'%3E%3Crect width='100' height='2' fill='%23FFD700' fill-opacity='0.5'/%3E%3C/svg%3E") 50 1, text;
+}
+
+/* Color themes - use CSS variables instead of direct colors */
+body[data-theme="dark"] {
+  --theme-bg: #1a1a1a;
+  --theme-text: #ffffff;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+}
+
+body[data-theme="light"] {
+  --theme-bg: #ffffff;
+  --theme-text: #000000;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
 }

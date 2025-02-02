@@ -1,0 +1,31 @@
+.headerSection {
+  @apply bg-[#2563EB] w-full py-16;
+}
+
+.headerContainer {
+  @apply max-w-7xl mx-auto px-4 flex flex-row-reverse justify-between items-center relative;
+}
+
+.mainLogo {
+  @apply w-[65px] h-[65px] object-contain;
+}
+
+.headerCallButton {
+  @apply flex items-center gap-2 bg-[#4F8BFF]/50 hover:bg-[#4F8BFF]/60 transition-colors px-6 py-2.5 rounded-lg absolute left-1/2 transform -translate-x-1/2;
+}
+
+.phoneIcon {
+  @apply w-5 h-5 text-white;
+}
+
+.callText {
+  @apply flex flex-col items-end;
+}
+
+.callLabel {
+  @apply text-sm font-medium text-white;
+}
+
+.phoneNumber {
+  @apply text-base font-bold text-white;
+}
