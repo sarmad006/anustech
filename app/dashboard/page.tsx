@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Equipment from '@/app/components/dashboard/Equipment.jsx'
+import ActiveProjects from '@/app/components/dashboard/ActiveProjects'
 import Accounting from '@/app/components/dashboard/Accounting';
 import Reports from '@/app/components/dashboard/Reports';
 
@@ -305,7 +306,7 @@ export default function Page() {
           </div>
         )
       case 'projects':
-        return <div className="text-white">תוכן פרויקטים</div>
+        return <ActiveProjects/>
       case 'equipment':
         return <Equipment />
         case 'employees':

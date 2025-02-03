@@ -45,6 +45,20 @@ const equipmentSchema = new mongoose.Schema({
   strict: false
 });
 
+const projectSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: String,
+  startDate: Date,
+  endDate: Date,
+  status: { type: String, enum: ['pending', 'in-progress', 'completed'], default: 'pending' },
+teamMembers: [String],
+  budget: Number
+}, {
+  collection: 'projects',
+  timestamps: true
+});
+
+const Project = mongoose.models.Project || mongoose.model('Project', projectSchema);
 const Equipment = mongoose.models.Equipment || mongoose.model('Equipment', equipmentSchema);
 
 async function initServer() {
@@ -90,6 +104,50 @@ async function initServer() {
           error: 'שגיאה בשמירת הציוד',
           details: error.message 
         });
+      }
+    });
+
+    app.get('/api/projects', async (req, res) => {
+      try {
+        const projects = await Project.find().sort({ createdAt: -1 }).lean().exec();
+        res.json(projects);
+      } catch (error) {
+        console.error('❌ GET Error:', error);
+        res.status(500).json({ error: 'Error fetching projects', details: error.message });
+      }
+    });
+
+    app.post('/api/projects', async (req, res) => {
+      try {
+        const project = new Project(req.body);
+        const result = await project.save();
+        res.status(201).json(result);
+      } catch (error) {
+        console.error('❌ POST Error:', error);
+        res.status(500).json({ error: 'Error saving project', details: error.message });
+      }
+    });
+
+
+    app.put('/api/projects/:id', async (req, res) => {
+      try {
+        const project = await Project.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!project) return res.status(404).json({ error: 'Project not found' });
+        res.json(project);
+      } catch (error) {
+        console.error('❌ PUT Error:', error);
+        res.status(500).json({ error: 'Error updating project', details: error.message });
+      }
+    });
+
+    app.delete('/api/projects/:id', async (req, res) => {
+      try {
+        const result = await Project.findByIdAndDelete(req.params.id);
+        if (!result) return res.status(404).json({ error: 'Project not found' });
+        res.json({ message: 'Project deleted successfully' });
+      } catch (error) {
+        console.error('❌ DELETE Error:', error);
+        res.status(500).json({ error: 'Error deleting project', details: error.message });
       }
     });
 
