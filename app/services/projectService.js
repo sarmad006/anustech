@@ -1,3 +1,5 @@
+"use strict";
+
 class ProjectService {
   constructor() {
     if (typeof window === 'undefined') {
@@ -8,6 +10,28 @@ class ProjectService {
   async getAll() {
     try {
       const response = await fetch('/api/projects', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store'
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to fetch projects');
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error in getAll:', error);
+      throw error;
+    }
+  }
+
+  async getSelected() {
+    try {
+      const response = await fetch('/api/projects/selected', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -50,7 +74,6 @@ class ProjectService {
   }
 
   async update(id, data) {
-    console.log("id",id,data)
     try {
       const response = await fetch(`/api/projects/${id}`, {
         method: 'PUT',
@@ -62,7 +85,6 @@ class ProjectService {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.log("eerror",errorData)
         throw new Error(errorData.error || 'Failed to update project');
       }
 

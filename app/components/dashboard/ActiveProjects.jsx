@@ -22,7 +22,7 @@ const INITIAL_FORM_DATA = {
   startDate: '',
   endDate: '',
   status: 'pending',
-  teamMembers: [],
+  totalAmount:0
 };
 
 const VALID_STATUSES = ['pending', 'in-progress', 'completed'];
@@ -66,24 +66,24 @@ export default function Projects() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!formData.name || !formData.startDate || !formData.teamMembers.length) {
+  
+    if (!formData.name || !formData.startDate || !formData.totalAmount) {
       setError('Please fill in all required fields');
       return;
     }
-
+  
     try {
       setIsSaving(true);
       setError(null);
-
+  
       if (editingProject) {
         await projectService.update(editingProject._id, formData);
         setProjects((prev) => prev.map((p) => (p._id === editingProject._id ? formData : p)));
       } else {
-        // const result = await projectService.create(formData);
+        const result = await projectService.create(formData);
         setProjects((prev) => [...prev, result]);
       }
-
+  
       setFormData(INITIAL_FORM_DATA);
       setIsModalOpen(false);
     } catch (err) {
@@ -93,6 +93,7 @@ export default function Projects() {
       setIsSaving(false);
     }
   };
+  
 
   const handleDelete = async (_id) => {
     if (!window.confirm('Are you sure you want to delete this project?')) return;
@@ -197,6 +198,7 @@ export default function Projects() {
             <Search className="absolute right-2 top-2.5 h-5 w-5 text-gray-400" />
           </div>
           <div className="flex items-center gap-2">
+            {/* <Filter className="w-5 h-5 text-gray-400" /> */}
             <label className="relative inline-flex items-center cursor-pointer">
               <input
                 type="checkbox"
@@ -205,6 +207,7 @@ export default function Projects() {
                 className="sr-only peer"
               />
               <div className="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+              {/* <span className="ml-3 text-sm font-medium text-gray-300">In Progress Only</span> */}
             </label>
           </div>
         </div>
@@ -216,7 +219,7 @@ export default function Projects() {
           <table className="min-w-full divide-y divide-gray-700">
             <thead>
               <tr>
-                {['Name', 'Start Date', 'End Date', 'Status', 'Team Count', 'Actions'].map((header) => (
+                {['Name', 'Start Date', 'End Date', 'Status', 'Total Amount', 'Actions'].map((header) => (
                   <th
                     key={header}
                     onClick={() => handleSort(header.toLowerCase())}
@@ -228,8 +231,8 @@ export default function Projects() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-700">
-              {filteredProjects && filteredProjects.map((project,index) => (
-                <tr key={index} className="hover:bg-gray-700/30">
+              {filteredProjects.map((project) => (
+                <tr key={project._id} className="hover:bg-gray-700/30">
                   <td className="px-6 py-4 whitespace-nowrap text-white">
                     {project.name}
                   </td>
@@ -255,11 +258,10 @@ export default function Projects() {
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-gray-300">
-                    <div className="flex items-center gap-2">
-                      <User className="w-4 h-4 text-gray-400" />
-                      {project.teamMembers.length}
-                    </div>
-                  </td>
+                  <div className="flex items-center gap-2">
+                    {project.totalAmount}
+                  </div>
+                </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm">
                     <button
                       onClick={() => handleEdit(project)}
@@ -291,7 +293,7 @@ export default function Projects() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300">Name</label>
+                  <label className="block text-sm font-medium text-gray-300">שם הפרויקט</label>
                   <input
                     type="text"
                     name="name"
@@ -349,15 +351,15 @@ export default function Projects() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-300">Team Members</label>
-                  <input
-                    type="number"
-                    name="teamMembers"
-                    value={formData.teamMembers.length}
-                    onChange={(e) => setFormData({ ...formData, teamMembers: Array(parseInt(e.target.value)).fill(null) })}
-                    className="mt-1 w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-white"
-                  />
-                </div>
+                <label className="block text-sm font-medium text-gray-300">Total Amount</label>
+                <input
+                  type="number"
+                  name="totalAmount"
+                  value={formData.totalAmount}
+                  onChange={(e) => setFormData({ ...formData, totalAmount: e.target.value })}
+                  className="mt-1 w-full p-2 bg-gray-700 border border-gray-600 rounded-md text-white"
+                />
+              </div>
               </div>
 
               <div className="flex justify-end gap-3 mt-6">

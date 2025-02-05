@@ -1,83 +1,59 @@
 'use client'
 
-import React, { useState, useEffect } from 'react';
-import InvoiceModal from './InvoiceModal';
+import React, { useState, useEffect,useCallback } from 'react';
 
-const InvoiceManagement = () => {
-  const [invoices, setInvoices] = useState([]);
-  const [selectedInvoice, setSelectedInvoice] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+import { 
+  Plus, 
+  Search, 
+  Edit2, 
+  Trash2, 
+  Calendar, 
+  User, 
+  Loader2,
+  CheckCircle2,
+  Clock,
+  AlertCircle,
+  Filter
+} from 'lucide-react';
 
-  useEffect(() => {
-    fetchInvoices();
-  }, []);
+interface InvoiceData {
+  invoiceNumber: string;
+  amount: number;
+  issueDate: string;
+  paymentDate: string;
+  status: 'pending' | 'paid';
+  clientName: string;
+  email: string;
+  phone: string;
+  _id?:string;
+  project:string;
+}
 
-  const fetchInvoices = async () => {
-    try {
-      const response = await fetch('/api/invoices');
-      if (!response.ok) throw new Error('Failed to fetch invoices');
-      const data = await response.json();
-      setInvoices(data);
-      setIsLoading(false);
-    } catch (error) {
-      console.error('Error fetching invoices:', error);
-      setIsLoading(false);
-    }
-  };
+interface InvoiceManagementProps {
+  invoicesData : InvoiceData[]
+  handleView : (invoiceObj:InvoiceData) => void
+  handleDelete : (invoiceID:string) => void
+}
 
-  const handleInvoiceClick = (invoice) => {
-    setSelectedInvoice(invoice);
-    setIsModalOpen(true);
-  };
+const InvoiceManagement: React.FC<InvoiceManagementProps> = ({ invoicesData,handleView,handleDelete }) => {
 
-  const handleInvoiceUpdate = (updatedInvoice) => {
-    setInvoices(invoices.map(inv => 
-      inv.id === updatedInvoice.id ? updatedInvoice : inv
-    ));
-    setIsModalOpen(false);
-    setSelectedInvoice(null);
-  };
 
-  const handleCreateInvoice = async (clientId) => {
-    try {
-      const response = await fetch('/api/invoices', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          clientId,
-          amount: 0,
-          items: [],
-        }),
-      });
 
-      if (!response.ok) throw new Error('Failed to create invoice');
 
-      const newInvoice = await response.json();
-      setInvoices([newInvoice, ...invoices]);
-      setSelectedInvoice(newInvoice);
-      setIsModalOpen(true);
-    } catch (error) {
-      console.error('Error creating invoice:', error);
-    }
-  };
-
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
-
+  // const handleDelete = async (invoiceId: string) => {
+  //   try {
+  //     await InvoiceService.delete(invoiceId);
+  //     // After deleting, remove the invoice from the list
+  //     setInvoices(invoices.filter((invoice) => invoice._id !== invoiceId));
+  //   } catch (error) {
+  //     console.error('Error deleting invoice:', error);
+  //   }
+  // };
   return (
     <div>
       <div className="mb-6 flex justify-between items-center mt-4">
-  <h2 className="text-xl font-semibold text-white">ניהול חשבוניות</h2>
-</div>
-
+     <h2 className="text-xl font-semibold text-white">ניהול חשבוניות</h2>
+    </div>
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-700">
           <thead>
@@ -106,17 +82,16 @@ const InvoiceManagement = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-700">
-            {invoices.map((invoice) => (
+            {invoicesData.map((invoice,index) => (
               <tr 
-                key={invoice.id} 
+                key={index} 
                 className="hover:bg-gray-800/50 cursor-pointer"
-                onClick={() => handleInvoiceClick(invoice)}
               >
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                  {invoice.number}
+                  {invoice.invoiceNumber}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                  {invoice.client.name}
+                  {invoice.clientName}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
                   ₪{invoice.amount.toLocaleString()}
@@ -125,7 +100,7 @@ const InvoiceManagement = () => {
                   {new Date(invoice.issueDate).toLocaleDateString('he-IL')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
-                  {new Date(invoice.dueDate).toLocaleDateString('he-IL')}
+                  {new Date(invoice.paymentDate).toLocaleDateString('he-IL')}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
@@ -139,13 +114,21 @@ const InvoiceManagement = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-400">
                   <div className="flex gap-2">
-                    <button className="text-blue-500 hover:text-blue-400">
-                      צפייה
+                    <button
+                      onClick={(e) => handleView(invoice)}
+                      className="text-blue-400 hover:text-blue-300 mr-4"
+                    >
+                    <Edit2 className="w-5 h-5" />
                     </button>
-                    <span>|</span>
-                    <button className="text-green-500 hover:text-green-400">
-                      PDF
+                    <button
+                      onClick={() => handleDelete(invoice._id)}
+                      className="text-red-400 hover:text-red-300"
+                    >
+                      <Trash2 className="w-5 h-5" />
                     </button>
+                    {/* <button onClick={() => handleDelete(invoice._id!)} className="text-red-500 hover:text-red-400">
+                      מחיקה
+                    </button> */}
                   </div>
                 </td>
               </tr>
@@ -153,18 +136,6 @@ const InvoiceManagement = () => {
           </tbody>
         </table>
       </div>
-
-      {isModalOpen && selectedInvoice && (
-        <InvoiceModal
-          invoice={selectedInvoice}
-          client={selectedInvoice.client}
-          onClose={() => {
-            setIsModalOpen(false);
-            setSelectedInvoice(null);
-          }}
-          onUpdate={handleInvoiceUpdate}
-        />
-      )}
     </div>
   );
 };
